@@ -6,18 +6,27 @@ import AppNavigator from './AppNavigator';
 
 const Main = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [homeVisible, setHomeVisible] = useState(false);
 
   const renderStep = () => {
+    console.log('Rendering step:', currentStep);
+    console.log('HomeVisible:', homeVisible);
+
     switch (currentStep) {
       case 1:
         return (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text>Welcome to the Food Intolerance Journal!</Text>
-            <Button onPress={() => setCurrentStep(currentStep + 1)}>Next</Button>
+            <Button onPress={() => {
+              setCurrentStep(currentStep + 1);
+              setHomeVisible(true);
+            }}>
+              Next: {currentStep}
+            </Button>
           </View>
         );
       case 2:
-        return <AppNavigator />;
+        return homeVisible && <AppNavigator />;
       // Add more cases for each step of the app
       default:
         return <Text>Something went wrong.</Text>;

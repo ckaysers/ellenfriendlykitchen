@@ -10,6 +10,9 @@ const Stack = createStackNavigator();
 const AppNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+        name="Home"
+        component={HomeScreen} />
       <Stack.Screen
         name="SymptomScreen"
         component={SymptomScreen}
@@ -20,9 +23,7 @@ const AppNavigator = () => {
         component={FoodScreen}
         options={{ title: 'Food Tracker' }}
       />
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen} />
+      
     </Stack.Navigator>
   );
 };
