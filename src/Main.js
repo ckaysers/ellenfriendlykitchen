@@ -1,103 +1,56 @@
-/* // src/Main.js
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import { Button } from 'react-native-paper';
-import AppNavigator from './AppNavigator';
+import { Text, View, TextInput, Button, ImageBackground } from 'react-native';
+import styles from './styles'; // Import the styles object
 
-const Main = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [homeVisible, setHomeVisible] = useState(false);
 
-  const renderStep = () => {
-    console.log('Rendering step:', currentStep);
-    console.log('HomeVisible:', homeVisible);
-
-    switch (currentStep) {
-      case 1:
-        return (
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Welcome to the Food Intolerance Journal!</Text>
-            <Button onPress={() => {
-              setCurrentStep(currentStep + 1);
-              setHomeVisible(true);
-            }}>
-              Next: {currentStep}
-            </Button>
-          </View>
-        );
-      case 2:
-        return homeVisible && <AppNavigator />;
-      // Add more cases for each step of the app
-      default:
-        return <Text>Something went wrong.</Text>;
-    }
-  };
-
-  return <View style={{ flex: 1 }}>{renderStep()}</View>;
-};
-const styles = Stylesheet.create({
-  containerStyling:{
-    background: '#0000FF'
-  },
-  textStyling :{
-    marginBottom :20,
-    color:'#FFF'
-  }
-});
-export default Main;
-*/
-import { StatusBar } from 'expo-status-bar';
-import React , {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 export default function App() {
-  const [newTask, setnewTask] = useState('');
-  const [appTasks, appTask] = useState([]);
-  const taskInputHandler = (enteredText) => {
-    setnewTask(enteredText);
+  const [newTask, setNewContent] = useState('');
+  const [appTasks, setAppContent] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+
+  const contentInputHandler = (enteredText) => {
+    setNewContent(enteredText);
   };
-  const addTaskHandler = () =>{
-    appTask(currentTask => [...currentTask, newTask]);
-    console.log(newTask);
+
+  const addContentHandler = () => {
+    setAppContent((currentTask) => [...currentTask, newTask]);
   };
+
+  const toggleInputVisibility = () => {
+    setShowInput(!showInput);
+  };
+
+  const TaskItem = ({ task }) => {
+    return (
+      <View style={styles.taskItem}>
+        <Text>{task}</Text>
+      </View>
+    );
+  };
+
   return (
-    <View style= {styles.container}>
-      
-      <View style = {styles.inputContainer}>
-      
-        <TextInput
-          placeholder = "Task List"
-          style = {styles.input}
-          onChangeText = {taskInputHandler}
-          value = {newTask}
-        /> 
-      
-        <Button title = "+"
-          onPress = {addTaskHandler}
-        /> 
-      </View> 
-      <View>
-        {appTasks.map((task) => <Text>{task}</Text>)} 
-      </View> 
-    </View> 
+    <ImageBackground
+      source={require('./assets/Background1.jpg')}
+      style={styles.container}
+    >
+      <Button title="What did you eat today?" onPress={toggleInputVisibility} />
+      {showInput && (
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Enter"
+            style={styles.input}
+            onChangeText={contentInputHandler}
+            value={newTask}
+          />
+          <Button title="Add" onPress={addContentHandler} />
+        </View>
+      )}
+      <View style={styles.listContainer}>        
+        {appTasks.map((task, index) => (
+          <TaskItem key={index} task={task} />
+        ))}
+      </View>
+    </ImageBackground>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  input :{
-    borderColor:"black", 
-    borderWidth:1 , 
-    padding :20,
-    
-  },
-  inputContainer :{
-    flexDirection :'row', 
-    justifyContent :'space-between', 
-    alignContent:'center', 
-    bottom:20 
-}, 
-});
+
